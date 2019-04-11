@@ -126,6 +126,8 @@
   <ItemGroup>
     <Image Include="crate.png" />
     <Image Include="homeranim.png" />
+    <Image Include="Utama3.png" />
+    <Image Include="Utama4.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="crateSprite.frag" />

@@ -21,6 +21,12 @@
     <Image Include="crate.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Utama3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Utama4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="playerSprite.frag">
