@@ -38,8 +38,10 @@ void Demo::Render()
 	//Set the background color
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-	DrawPlayerSprite();
 	DrawCrateSprite();
+	DrawPlayerSprite();
+	
+
 }
 
 void Demo::UpdatePlayerSpriteAnim(float deltaTime)
@@ -102,7 +104,7 @@ void Demo::ControlPlayerSprite(float deltaTime)
 	}
 
 	// check collision between bart and crate
-	if (IsCollided(xpos, ypos, frame_width, frame_height, xpos2, ypos2, frame_width2, frame_height2) 
+	/*if (IsCollided(xpos, ypos, frame_width, frame_height, xpos2, ypos2, frame_width2, frame_height2) 
 		&& (xpos < xpos2 + frame_width2 && xpos + frame_width > xpos2)) {
 		ypos = oldypos;
 
@@ -112,7 +114,7 @@ void Demo::ControlPlayerSprite(float deltaTime)
 		&& (ypos < ypos2 + frame_height2 )) {
 		xpos = oldxpos;
 
-	}
+	}*/
 
 
 	/*if (xpos < xpos2 + frame_width2 && xpos + frame_width > xpos2) {
@@ -174,19 +176,22 @@ void Demo::BuildPlayerSprite()
 
 	// Load, create texture 
 	int width, height;
-	unsigned char* image = SOIL_load_image("homeranim.png", &width, &height, 0, SOIL_LOAD_RGBA);
+	unsigned char* image = SOIL_load_image("Utama3.png", &width, &height, 0, SOIL_LOAD_RGBA);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
 
 	// Set up vertex data (and buffer(s)) and attribute pointers
-	frame_width = ((float)width) / NUM_FRAMES;
-	frame_height = (float)height;
+	/*frame_width = ((float)width) / NUM_FRAMES;
+	frame_height = (float)height;*/
+
+	frame_width = ((float)width / 20);
+	frame_height = (float)height / 20;
 	GLfloat vertices[] = {
 		// Positions   // Colors           // Texture Coords
 		1,  1, 0.0f,   1.0f, 1.0f, 1.0f,   1.0f, 1.0f, // Bottom Right
-		1,  0, 0.0f,   1.0f, 1.0f, 0.0f,   1.0f, 0.0f, // Top Right
-		0,  0, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 0.0f, // Top Left
+		1,  0, 0.0f,   1.0f, 1.0f, 1.0f,   1.0f, 0.0f, // Top Right
+		0,  0, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f, 0.0f, // Top Left
 		0,  1, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f, 1.0f  // Bottom Left 
 	};
 
@@ -260,19 +265,19 @@ void Demo::BuildCrateSprite()
 
 	// Load, create texture 
 	int width, height;
-	unsigned char* image = SOIL_load_image("crate.png", &width, &height, 0, SOIL_LOAD_RGBA);
+	unsigned char* image = SOIL_load_image("Map1.png", &width, &height, 0, SOIL_LOAD_RGBA);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
 
 	// Set up vertex data (and buffer(s)) and attribute pointers
-	frame_width2 = (float)width;
-	frame_height2 = (float)height;
+	frame_width2 = GetScreenWidth();
+	frame_height2 = GetScreenHeight();
 	GLfloat vertices[] = {
 		// Positions   // Colors           // Texture Coords
 		1,  1, 0.0f,   1.0f, 1.0f, 1.0f,   1.0f, 1.0f, // Bottom Right
-		1,  0, 0.0f,   1.0f, 1.0f, 0.0f,   1.0f, 0.0f, // Top Right
-		0,  0, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 0.0f, // Top Left
+		1,  0, 0.0f,   1.0f, 1.0f, 1.0f,   1.0f, 0.0f, // Top Right
+		0,  0, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f, 0.0f, // Top Left
 		0,  1, 0.0f,   1.0f, 1.0f, 1.0f,   0.0f, 1.0f  // Bottom Left 
 	};
 
@@ -347,7 +352,8 @@ bool Demo::IsCollided(float x1, float y1, float width1, float height1,
 int main(int argc, char** argv) {
 
 	Engine::Game &game = Demo();
-	game.Start("Collision Detection using AABB", 800, 600, false, WindowFlag::WINDOWED, 60, 1);
-
+	game.Start("Collision Detection using AABB", 480, 768, false, WindowFlag::WINDOWED, 60, 1);
+	//game.Start("Collision Detection using AABB", 1600, 2560, false, WindowFlag::WINDOWED, 60, 1);
 	return 0;
 }
+

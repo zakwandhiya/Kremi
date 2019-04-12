@@ -10,7 +10,7 @@
 
 #include "Game.h"
 
-#define NUM_FRAMES 8
+#define NUM_FRAMES 1
 #define FRAME_DUR 80
 
 using namespace glm;
