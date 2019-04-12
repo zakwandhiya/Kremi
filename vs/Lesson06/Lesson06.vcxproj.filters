@@ -21,7 +21,6 @@
     <Image Include="crate.png">
       <Filter>Resource Files</Filter>
     </Image>
-<<<<<<< HEAD
     <Image Include="Map1.png">
       <Filter>Resource Files</Filter>
     </Image>
@@ -29,12 +28,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Utama3.png">
-=======
-    <Image Include="Utama3.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Utama4.png">
->>>>>>> f65a9051dece168f015431916dba28c69bb0b482
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
