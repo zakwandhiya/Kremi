@@ -126,13 +126,27 @@
   <ItemGroup>
     <Image Include="crate.png" />
     <Image Include="homeranim.png" />
+    <Image Include="M1.png" />
+    <Image Include="M10.png" />
+    <Image Include="M11.png" />
+    <Image Include="M12.png" />
+    <Image Include="M13.png" />
+    <Image Include="M2.png" />
+    <Image Include="M3.png" />
+    <Image Include="M4.png" />
+    <Image Include="M5.png" />
+    <Image Include="M6.png" />
+    <Image Include="M7.png" />
+    <Image Include="M9.png" />
     <Image Include="Map1.png" />
     <Image Include="Utama1.png" />
     <Image Include="Utama3.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="crateSprite.frag" />
-    <None Include="crateSprite.vert" />
+    <None Include="background1.frag" />
+    <None Include="background1.vert" />
+    <None Include="background2.frag" />
+    <None Include="background2.vert" />
     <None Include="playerSprite.frag" />
     <None Include="playerSprite.vert" />
   </ItemGroup>

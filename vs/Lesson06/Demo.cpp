@@ -1,4 +1,5 @@
 #include "Demo.h"
+#pragma warning(disable: 4996)
 
 
 Demo::Demo()
@@ -13,7 +14,7 @@ Demo::~Demo()
 void Demo::Init()
 {
 	BuildPlayerSprite();
-	BuildCrateSprite();
+	BuildBackgroundSprite();
 }
 
 void Demo::Update(float deltaTime)
@@ -22,9 +23,20 @@ void Demo::Update(float deltaTime)
 		SDL_Quit();
 		exit(0);
 	}
-
-	UpdatePlayerSpriteAnim(deltaTime);
+	
 	ControlPlayerSprite(deltaTime);
+	UpdateBackground();
+}
+
+void Demo::UpdateBackground() {
+	yBackgroundPos[0] += 1.5;
+	for (int i = 1; i < bgLength; i++) {
+		yBackgroundPos[i] = yBackgroundPos[i - 1] - frameHeightBackgrounds[i - 1];
+	}
+
+	if (yBackgroundPos[0] > frameHeightBackgrounds[0] * (bgLength - 1)) {
+		yBackgroundPos[0] = 0;
+	}
 }
 
 void Demo::Render()
@@ -38,7 +50,7 @@ void Demo::Render()
 	//Set the background color
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-	DrawCrateSprite();
+	DrawBackgroundSprite();
 	DrawPlayerSprite();
 	
 
@@ -79,7 +91,7 @@ void Demo::ControlPlayerSprite(float deltaTime)
 		walk_anim = true;
 	}
 
-	if (IsKeyDown("Jump")) {
+	/*if (IsKeyDown("Jump")) {
 		if (onGround) {
 			yVelocity = -12.0f;
 			onGround = false;
@@ -90,7 +102,7 @@ void Demo::ControlPlayerSprite(float deltaTime)
 		if (yVelocity < -6.0f) {
 			yVelocity = -6.0f;
 		}
-	}
+	}*/
 
 	yVelocity += gravity * deltaTime;
 	ypos += deltaTime * yVelocity;
@@ -185,8 +197,8 @@ void Demo::BuildPlayerSprite()
 	/*frame_width = ((float)width) / NUM_FRAMES;
 	frame_height = (float)height;*/
 
-	frame_width = ((float)width / 20);
-	frame_height = (float)height / 20;
+	frame_width = ((float)width / 30);
+	frame_height = (float)height / 30;
 	GLfloat vertices[] = {
 		// Positions   // Colors           // Texture Coords
 		1,  1, 0.0f,   1.0f, 1.0f, 1.0f,   1.0f, 1.0f, // Bottom Right
@@ -250,29 +262,49 @@ void Demo::BuildPlayerSprite()
 	InputMapping("Jump", SDL_CONTROLLER_BUTTON_A);
 }
 
-void Demo::BuildCrateSprite()
+void Demo::BuildBackgroundSprite() {
+	for (int i = 0; i < bgLength; i++) {
+		BuildBackground(i);
+	}
+}
+
+void Demo::BuildBackground(int i)
 {
-	this->program2 = BuildShader("crateSprite.vert", "crateSprite.frag");
-	UseShader(this->program2);
+	string vertFileName = "background" + std::to_string(i + 1) + ".vert";
+	string fragFileName = "background" + std::to_string(i + 1) + ".frag";
+	/*char* vertFileNameInChar = new char[vertFileName.length() + 1];
+	strcpy(vertFileNameInChar, vertFileName.c_str());
+	char* fragFileNameInChar = new char[fragFileName.length() + 1];
+	strcpy(fragFileNameInChar, fragFileName.c_str());*/
+
+	//this->backgrounds[i] = BuildShader(vertFileName.c_str(), fragFileName.c_str());
+	this->backgrounds[i] = BuildShader("background1.vert", "background1.frag");
+	UseShader(this->backgrounds[i]);
 
 	// Load and create a texture 
-	glGenTextures(1, &texture2);
-	glBindTexture(GL_TEXTURE_2D, texture2); // All upcoming GL_TEXTURE_2D operations now have effect on our texture object
+	glGenTextures(1, &(textureBackgrounds[i]));
+	glBindTexture(GL_TEXTURE_2D, textureBackgrounds[i]); // All upcoming GL_TEXTURE_2D operations now have effect on our texture object
 
 	// Set texture filtering
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	// Load, create texture 
+	int realIndex = i + 1;
+	if (i == bgLength - 1) realIndex = 1;
+	string imageFileName = "M" + std::to_string(realIndex) + ".png";
+	/*char* imageFileNameInChar = new char[imageFileName.length() + 1];
+	strcpy(imageFileNameInChar, imageFileName.c_str());*/
 	int width, height;
-	unsigned char* image = SOIL_load_image("Map1.png", &width, &height, 0, SOIL_LOAD_RGBA);
+	unsigned char* image = SOIL_load_image(imageFileName.c_str(), &width, &height, 0, SOIL_LOAD_RGBA);
+	//unsigned char* image = SOIL_load_image("M1.png", &width, &height, 0, SOIL_LOAD_RGBA);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
 
 	// Set up vertex data (and buffer(s)) and attribute pointers
-	frame_width2 = GetScreenWidth();
-	frame_height2 = GetScreenHeight();
+	frameWidthBackgrounds[i] = (float) GetScreenWidth();
+	frameHeightBackgrounds[i] = (float) GetScreenHeight();
 	GLfloat vertices[] = {
 		// Positions   // Colors           // Texture Coords
 		1,  1, 0.0f,   1.0f, 1.0f, 1.0f,   1.0f, 1.0f, // Bottom Right
@@ -312,27 +344,36 @@ void Demo::BuildCrateSprite()
 	// Set orthographic projection
 	mat4 projection;
 	projection = ortho(0.0f, static_cast<GLfloat>(GetScreenWidth()), static_cast<GLfloat>(GetScreenHeight()), 0.0f, -1.0f, 1.0f);
-	glUniformMatrix4fv(glGetUniformLocation(this->program2, "projection"), 1, GL_FALSE, value_ptr(projection));
+	glUniformMatrix4fv(glGetUniformLocation(this->backgrounds[i], "projection"), 1, GL_FALSE, value_ptr(projection));
 
 	// set sprite position, gravity, velocity
-	xpos2 = (GetScreenWidth() - frame_width2) / 4;
-	ypos2 = GetScreenHeight() - frame_height2;
+	xBackgroundPos[i] = (GetScreenWidth() - frameWidthBackgrounds[i]) / 4;
+	yBackgroundPos[i] = (float) 0;
+	if (i != 0) {
+		yBackgroundPos[i] = yBackgroundPos[i - 1] - frameHeightBackgrounds[i - 1];
+	}
 }
 
-void Demo::DrawCrateSprite() {
+void Demo::DrawBackgroundSprite() {
+	for (int i = 0; i < bgLength; i++) {
+		DrawBackground(i);
+	}
+}
+
+void Demo::DrawBackground(int i) {
 	// Bind Textures using texture units
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, texture2);
+	glBindTexture(GL_TEXTURE_2D, textureBackgrounds[i]);
 	// Activate shader
-	UseShader(this->program2);
-	glUniform1i(glGetUniformLocation(this->program2, "ourTexture"), 1);
+	UseShader(this->backgrounds[i]);
+	glUniform1i(glGetUniformLocation(this->backgrounds[i], "ourTexture"), 1);
 
 	mat4 model;
 	// Translate sprite along x-axis
-	model = translate(model, vec3(xpos2, ypos2, 0.0f));
+	model = translate(model, vec3(xBackgroundPos[i], yBackgroundPos[i], 0.0f));
 	// Scale sprite 
-	model = scale(model, vec3(frame_width2, frame_height2, 1));
-	glUniformMatrix4fv(glGetUniformLocation(this->program2, "model"), 1, GL_FALSE, value_ptr(model));
+	model = scale(model, vec3(frameWidthBackgrounds[i], frameHeightBackgrounds[i], 1));
+	glUniformMatrix4fv(glGetUniformLocation(this->backgrounds[i], "model"), 1, GL_FALSE, value_ptr(model));
 
 	// Draw sprite
 	glBindVertexArray(VAO2);

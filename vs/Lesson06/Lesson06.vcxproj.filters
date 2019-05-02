@@ -30,6 +30,42 @@
     <Image Include="Utama3.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="M1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="M2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="M3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="M4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="M5.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="M6.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="M7.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="M9.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="M10.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="M11.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="M12.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="M13.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="playerSprite.frag">
@@ -38,10 +74,16 @@
     <None Include="playerSprite.vert">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="crateSprite.frag">
+    <None Include="background1.frag">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="crateSprite.vert">
+    <None Include="background1.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="background2.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="background2.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
