@@ -316,11 +316,11 @@ void Demo::ControlObstacleSprite(float delta_time)
 	}
 	if (obs_y_pos[obsLength - 1] > GetScreenHeight()) {
 		ResetAllObstacles();
-		velocity += .7;
+		velocity += 1;
 		xVelocity += .05;
 		obs_distance += 50;
 
-		if (velocity > 10) velocity = 10;
+		if (velocity > 20) velocity = 20;
 		if (xVelocity > .5) xVelocity = .5;
 		if (obs_distance > 300) obs_distance = 300;
 	}

@@ -32,14 +32,14 @@ private:
 	float frame_dur = 0, 
 		oldxpos = 0, oldypos = 0, 
 		xpos = 0, ypos = 0, 
-		gravity = 0, xVelocity = .1, 
+		gravity = 0, xVelocity = .2, 
 		yVelocity = 0, yposGround = 0,
 		xBackgroundPos[3], yBackgroundPos[3];
 	bool isPaused = false;
 	GLuint VBO, VAO, EBO, texture, program, VBO2, VAO2, EBO2, textureBackgrounds[3], backgrounds[3];
 	GLuint obs_vbo[10], obs_vao[10], obs_ebo[10], obs_texture[10], obs_program[10];
 	int obsLength = 10, obs_distance = 200;
-	float velocity = 1.5;
+	float velocity = 5;
 	float obs_x_pos[10], obs_y_pos[10];
 	float obs_frame_width[10], obs_frame_height[10];
 	void ResetAllObstacles();
