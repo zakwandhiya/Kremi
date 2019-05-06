@@ -72,6 +72,9 @@
     <Image Include="obstacle2.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="charfit.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="playerSprite.frag">

@@ -124,6 +124,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Image Include="charfit.png" />
     <Image Include="crate.png" />
     <Image Include="homeranim.png" />
     <Image Include="M1.png" />

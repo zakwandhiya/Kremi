@@ -362,7 +362,7 @@ void Demo::BuildPlayerSprite()
 
 	// Load, create texture 
 	int width, height;
-	unsigned char* image = SOIL_load_image("Utama3.png", &width, &height, 0, SOIL_LOAD_RGBA);
+	unsigned char* image = SOIL_load_image("charfit.png", &width, &height, 0, SOIL_LOAD_RGBA);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
@@ -371,8 +371,8 @@ void Demo::BuildPlayerSprite()
 	/*frame_width = ((float)width) / NUM_FRAMES;
 	frame_height = (float)height;*/
 
-	frame_width = ((float)width / 30);
-	frame_height = (float)height / 30;
+	frame_width = (float)width / 6;
+	frame_height = (float)height / 6;
 	GLfloat vertices[] = {
 		// Positions   // Colors           // Texture Coords
 		1,  1, 0.0f,   1.0f, 1.0f, 1.0f,   1.0f, 1.0f, // Bottom Right
@@ -416,7 +416,7 @@ void Demo::BuildPlayerSprite()
 
 	// set sprite position, gravity, velocity
 	xpos = (GetScreenWidth() - frame_width) / 2;
-	yposGround = GetScreenHeight() - frame_height;
+	yposGround = GetScreenHeight() - frame_height - 100;
 	ypos = yposGround;
 	gravity = 0.05f;
 
