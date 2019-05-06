@@ -13,7 +13,7 @@ Demo::~Demo()
 
 void Demo::Init()
 {
-	BuildObstacleSprite();
+	BuildObstacles();
 	BuildPlayerSprite();
 	BuildBackgroundSprite();
 }
@@ -53,7 +53,7 @@ void Demo::Render()
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
 	DrawBackgroundSprite();
-	DrawObstacleSprite();
+	DrawObstacles();
 	DrawPlayerSprite();
 	
 
@@ -173,16 +173,24 @@ void Demo::DrawPlayerSprite() {
 	glDisable(GL_BLEND);
 }
 
-void Demo::BuildObstacleSprite()
+void Demo::BuildObstacles() {
+	for (int i = 0; i < obsLength; i++) {
+		BuildObstacleSprite(i);
+	}
+
+	ResetAllObstacles();
+}
+
+void Demo::BuildObstacleSprite(int i)
 {
-	this->obs_program = BuildShader("background1.vert", "background1.frag");
-	UseShader(this->obs_program);
+	this->obs_program[i] = BuildShader("background1.vert", "background1.frag");
+	UseShader(this->obs_program[i]);
 
 	//glUniform1f(glGetUniformLocation(this->obs_program, "n"), 1.0f / NUM_FRAMES);
 
 	// Load and create a texture 
-	glGenTextures(1, &this->obs_texture);
-	glBindTexture(GL_TEXTURE_2D, obs_texture); // All upcoming GL_TEXTURE_2D operations now have effect on our texture object
+	glGenTextures(1, &this->obs_texture[i]);
+	glBindTexture(GL_TEXTURE_2D, obs_texture[i]); // All upcoming GL_TEXTURE_2D operations now have effect on our texture object
 
 	// Set texture filtering
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -197,8 +205,8 @@ void Demo::BuildObstacleSprite()
 
 	// Set up vertex data (and buffer(s)) and attribute pointers
 
-	obs_frame_width = (float)width;
-	obs_frame_height = (float)height;
+	obs_frame_width[i] = (float)width;
+	obs_frame_height[i] = (float)height;
 	GLfloat vertices[] = {
 		// Positions   // Colors           // Texture Coords
 		1,  1, 0.0f,   1.0f, 1.0f, 1.0f,   1.0f, 1.0f, // Bottom Right
@@ -211,16 +219,16 @@ void Demo::BuildObstacleSprite()
 		0, 3, 2, 1
 	};
 
-	glGenVertexArrays(1, &obs_vao);
-	glGenBuffers(1, &obs_vbo);
-	glGenBuffers(1, &obs_ebo);
+	glGenVertexArrays(1, &obs_vao[i]);
+	glGenBuffers(1, &obs_vbo[i]);
+	glGenBuffers(1, &obs_ebo[i]);
 
-	glBindVertexArray(obs_vao);
+	glBindVertexArray(obs_vao[i]);
 
-	glBindBuffer(GL_ARRAY_BUFFER, obs_vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, obs_vbo[i]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, obs_ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, obs_ebo[i]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// Position attribute
@@ -238,34 +246,40 @@ void Demo::BuildObstacleSprite()
 	// Set orthographic projection
 	mat4 projection;
 	projection = ortho(0.0f, static_cast<GLfloat>(GetScreenWidth()), static_cast<GLfloat>(GetScreenHeight()), 0.0f, -1.0f, 1.0f);
-	glUniformMatrix4fv(glGetUniformLocation(this->obs_program, "projection"), 1, GL_FALSE, value_ptr(projection));
+	glUniformMatrix4fv(glGetUniformLocation(this->obs_program[i], "projection"), 1, GL_FALSE, value_ptr(projection));
 
-	obs_x_pos = GetScreenWidth() / 2;
-	obs_y_pos = GetScreenHeight() / 2;
+	//obs_x_pos[i] = GetScreenWidth() / 2;
+	//obs_y_pos[i] = GetScreenHeight() / 2;
 }
 
-void Demo::DrawObstacleSprite()
+void Demo::DrawObstacles() {
+	for (int i = 0; i < obsLength; i++) {
+		DrawObstacleSprite(i);
+	}
+}
+
+void Demo::DrawObstacleSprite(int i)
 {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Bind Textures using texture units
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, obs_texture);
-	UseShader(this->obs_program);
-	glUniform1i(glGetUniformLocation(this->obs_program, "ourTexture"), 0);
+	glBindTexture(GL_TEXTURE_2D, obs_texture[i]);
+	UseShader(this->obs_program[i]);
+	glUniform1i(glGetUniformLocation(this->obs_program[i], "ourTexture"), 0);
 
 	// set flip
 	//glUniform1i(glGetUniformLocation(this->obs_program, "flip"), flip);
 	mat4 model;
 	// Translate sprite along x-axis
-	model = translate(model, vec3(obs_x_pos, obs_y_pos, 0.0f));
+	model = translate(model, vec3(obs_x_pos[i], obs_y_pos[i], 0.0f));
 	// Scale sprite 
-	model = scale(model, vec3(obs_frame_width, obs_frame_height, 1));
-	glUniformMatrix4fv(glGetUniformLocation(this->obs_program, "model"), 1, GL_FALSE, value_ptr(model));
+	model = scale(model, vec3(obs_frame_width[i], obs_frame_height[i], 1));
+	glUniformMatrix4fv(glGetUniformLocation(this->obs_program[i], "model"), 1, GL_FALSE, value_ptr(model));
 
 	// Draw sprite
-	glBindVertexArray(obs_vao);
+	glBindVertexArray(obs_vao[i]);
 	glDrawElements(GL_QUADS, 4, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 
@@ -275,11 +289,29 @@ void Demo::DrawObstacleSprite()
 
 void Demo::ControlObstacleSprite(float delta_time)
 {
-	obs_y_pos += 1.5;
-	if (obs_y_pos > GetScreenHeight()) {
-		// reset obstacle y pos
+	for (int i = 0; i < obsLength; i++) {
+		obs_y_pos[i] += 1.5;
+	}
+	if (obs_y_pos[obsLength - 1] > GetScreenHeight()) {
+		ResetAllObstacles();
+	}
+}
 
-		obs_y_pos = -obs_frame_height;
+void Demo::ResetAllObstacles() {
+	for (int i = 0; i < obsLength; i++) {
+		float random = rand() % 100 + 1;
+		random /= 100;
+
+		if (i % 2 == 0) {
+			cout << random << endl;
+			obs_x_pos[i] = (float)-random * (GetScreenWidth() - 200);
+			cout << obs_x_pos[i] << " " << GetScreenHeight() << " " << obs_frame_width[i] << endl;
+			obs_y_pos[i] = (float)(-obs_frame_height[i] * (i / 2) - 100 * (i / 2)) - obs_frame_height[i];
+		}
+		else {
+			obs_x_pos[i] = (float)obs_x_pos[i - 1] + obs_frame_width[i] + 200;
+			obs_y_pos[i] = (float)obs_y_pos[i - 1];
+		}
 	}
 }
 

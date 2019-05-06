@@ -36,11 +36,15 @@ private:
 		yVelocity = 0, yposGround = 0,
 		xBackgroundPos[3], yBackgroundPos[3];
 	GLuint VBO, VAO, EBO, texture, program, VBO2, VAO2, EBO2, textureBackgrounds[3], backgrounds[3];
-	GLuint obs_vbo, obs_vao, obs_ebo, obs_texture, obs_program;
-	float obs_x_pos = 0, obs_y_pos = 0;
-	float obs_frame_width = 0, obs_frame_height = 0;
-	void BuildObstacleSprite();
-	void DrawObstacleSprite();
+	GLuint obs_vbo[10], obs_vao[10], obs_ebo[10], obs_texture[10], obs_program[10];
+	int obsLength = 10;
+	float obs_x_pos[10], obs_y_pos[10];
+	float obs_frame_width[10], obs_frame_height[10];
+	void ResetAllObstacles();
+	void BuildObstacles();
+	void BuildObstacleSprite(int i);
+	void DrawObstacles();
+	void DrawObstacleSprite(int i);
 	void ControlObstacleSprite(float delta_time);
 	bool walk_anim = false, onGround = true;
 	unsigned int frame_idx = 0, flip = 0;
