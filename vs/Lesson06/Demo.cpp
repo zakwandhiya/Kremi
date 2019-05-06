@@ -33,7 +33,7 @@ void Demo::Update(float deltaTime)
 }
 
 void Demo::UpdateBackground() {
-	yBackgroundPos[0] += velocity;
+	yBackgroundPos[0] += velocity / 3;
 	for (int i = 1; i < bgLength; i++) {
 		yBackgroundPos[i] = yBackgroundPos[i - 1] - frameHeightBackgrounds[i - 1];
 	}
