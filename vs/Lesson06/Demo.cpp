@@ -24,6 +24,8 @@ void Demo::Update(float deltaTime)
 		SDL_Quit();
 		exit(0);
 	}
+
+	if (isPaused) return;
 	
 	ControlPlayerSprite(deltaTime);
 	UpdateBackground();
@@ -31,10 +33,13 @@ void Demo::Update(float deltaTime)
 }
 
 void Demo::UpdateBackground() {
-	yBackgroundPos[0] += 1.5;
+	yBackgroundPos[0] += velocity;
 	for (int i = 1; i < bgLength; i++) {
 		yBackgroundPos[i] = yBackgroundPos[i - 1] - frameHeightBackgrounds[i - 1];
 	}
+
+	//cout << "screen width " << GetScreenWidth() << endl;
+	//cout << obs_frame_width[0] << endl;
 
 	if (yBackgroundPos[0] > frameHeightBackgrounds[0] * (bgLength - 1)) {
 		yBackgroundPos[0] = 0;
@@ -55,8 +60,19 @@ void Demo::Render()
 	DrawBackgroundSprite();
 	DrawObstacles();
 	DrawPlayerSprite();
-	
+	CheckCollisions();
 
+}
+
+void Demo::CheckCollisions() {
+	for (int i = 0; i < obsLength; i++) {
+		if (IsCollided(
+			obs_x_pos[i], obs_y_pos[i], obs_frame_width[i], obs_frame_height[i],
+			xpos, ypos, frame_width, frame_height
+		)) {
+			isPaused = true;
+		}
+	}
 }
 
 void Demo::UpdatePlayerSpriteAnim(float deltaTime)
@@ -116,6 +132,12 @@ void Demo::ControlPlayerSprite(float deltaTime)
 		ypos = yposGround;
 		yVelocity = 0;
 		onGround = true;
+	}
+
+	if (xpos > GetScreenWidth() - frame_width) {
+		xpos = GetScreenWidth() - frame_width;
+	} else if (xpos < 0) {
+		xpos = 0;
 	}
 
 	// check collision between bart and crate
@@ -198,7 +220,7 @@ void Demo::BuildObstacleSprite(int i)
 
 	// Load, create texture 
 	int width, height;
-	unsigned char* image = SOIL_load_image("black.jpg", &width, &height, 0, SOIL_LOAD_RGBA);
+	unsigned char* image = SOIL_load_image("obstacle2.png", &width, &height, 0, SOIL_LOAD_RGBA);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
@@ -290,10 +312,17 @@ void Demo::DrawObstacleSprite(int i)
 void Demo::ControlObstacleSprite(float delta_time)
 {
 	for (int i = 0; i < obsLength; i++) {
-		obs_y_pos[i] += 1.5;
+		obs_y_pos[i] += velocity;
 	}
 	if (obs_y_pos[obsLength - 1] > GetScreenHeight()) {
 		ResetAllObstacles();
+		velocity += .7;
+		xVelocity += .05;
+		obs_distance += 50;
+
+		if (velocity > 10) velocity = 10;
+		if (xVelocity > .5) xVelocity = .5;
+		if (obs_distance > 300) obs_distance = 300;
 	}
 }
 
@@ -304,9 +333,9 @@ void Demo::ResetAllObstacles() {
 
 		if (i % 2 == 0) {
 			cout << random << endl;
-			obs_x_pos[i] = (float)-random * (GetScreenWidth() - 200);
+			obs_x_pos[i] = (float)-random * (obs_frame_width[i] - 250) - 230;
 			cout << obs_x_pos[i] << " " << GetScreenHeight() << " " << obs_frame_width[i] << endl;
-			obs_y_pos[i] = (float)(-obs_frame_height[i] * (i / 2) - 100 * (i / 2)) - obs_frame_height[i];
+			obs_y_pos[i] = (float)(-obs_frame_height[i] * (i / 2) - obs_distance * (i / 2)) - obs_frame_height[i];
 		}
 		else {
 			obs_x_pos[i] = (float)obs_x_pos[i - 1] + obs_frame_width[i] + 200;
@@ -390,7 +419,6 @@ void Demo::BuildPlayerSprite()
 	yposGround = GetScreenHeight() - frame_height;
 	ypos = yposGround;
 	gravity = 0.05f;
-	xVelocity = 0.1f;
 
 	// Add input mapping
 	// to offer input change flexibility you can save the input mapping configuration in a configuration file (non-hard code) !
@@ -435,13 +463,10 @@ void Demo::BuildBackground(int i)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	// Load, create texture 
-	int realIndex = i + 1;
-	if (i == bgLength - 1) realIndex = 1;
-	string imageFileName = "M" + std::to_string(realIndex) + ".png";
 	/*char* imageFileNameInChar = new char[imageFileName.length() + 1];
 	strcpy(imageFileNameInChar, imageFileName.c_str());*/
 	int width, height;
-	unsigned char* image = SOIL_load_image(imageFileName.c_str(), &width, &height, 0, SOIL_LOAD_RGBA);
+	unsigned char* image = SOIL_load_image("bg.png", &width, &height, 0, SOIL_LOAD_RGBA);
 	//unsigned char* image = SOIL_load_image("M1.png", &width, &height, 0, SOIL_LOAD_RGBA);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	SOIL_free_image_data(image);

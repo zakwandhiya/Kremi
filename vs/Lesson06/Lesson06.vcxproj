@@ -139,6 +139,8 @@
     <Image Include="M7.png" />
     <Image Include="M9.png" />
     <Image Include="Map1.png" />
+    <Image Include="obstacle.png" />
+    <Image Include="obstacle2.png" />
     <Image Include="Utama1.png" />
     <Image Include="Utama3.png" />
   </ItemGroup>
