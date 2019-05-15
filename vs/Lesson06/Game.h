@@ -12,6 +12,7 @@
 #include <GLM/gtc/matrix_transform.hpp>
 #include <GLM/gtc/type_ptr.hpp>
 #include <glm/gtx/vector_angle.hpp>
+#include <SDL/SDL_mixer.h>
 
 using namespace std;
 using namespace glm;

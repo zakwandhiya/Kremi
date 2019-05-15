@@ -14,6 +14,10 @@ void Engine::Game::Start(string windowTitle, unsigned int screenWidth, unsigned 
 {
 	//Initialize SDL
 	SDL_Init(SDL_INIT_EVERYTHING);
+	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+
+	Mix_Init(MIX_INIT_MP3 | MIX_INIT_FLAC | MIX_INIT_OGG);
+	Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 4096);
 
 	//Tell SDL that we want a double buffered window so we don't get any flickering
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);

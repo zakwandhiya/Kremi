@@ -161,6 +161,10 @@
     <ClCompile Include="Demo.cpp" />
     <ClCompile Include="Game.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="crash.mp3" />
+    <Media Include="crash.wav" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -61,6 +61,7 @@ private:
 	void DrawPlayerSprite();
 	void UpdatePlayerSpriteAnim(float deltaTime);
 	void ControlPlayerSprite(float deltaTime);
+	void PlayCrashSound();
 };
 #endif
 

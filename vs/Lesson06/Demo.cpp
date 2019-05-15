@@ -18,6 +18,11 @@ void Demo::Init()
 	BuildBackgroundSprite();
 }
 
+void Demo::PlayCrashSound() {
+	Mix_Chunk *sound = Mix_LoadWAV("crash.wav");
+	Mix_PlayChannel(-1, sound, 0);
+}
+
 void Demo::Update(float deltaTime)
 {
 	if (IsKeyDown("Quit")) {
@@ -61,16 +66,18 @@ void Demo::Render()
 	DrawObstacles();
 	DrawPlayerSprite();
 	CheckCollisions();
-
 }
 
 void Demo::CheckCollisions() {
+	if (isPaused) return;
+
 	for (int i = 0; i < obsLength; i++) {
 		if (IsCollided(
 			obs_x_pos[i], obs_y_pos[i], obs_frame_width[i], obs_frame_height[i],
 			xpos, ypos, frame_width, frame_height
 		)) {
 			isPaused = true;
+			PlayCrashSound();
 		}
 	}
 }
