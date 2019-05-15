@@ -95,6 +95,12 @@
     <None Include="background2.vert">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="text_shader.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="text_shader.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Demo.h">
@@ -117,6 +123,12 @@
       <Filter>Resource Files</Filter>
     </Media>
     <Media Include="crash.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Font Include="hongkonghustle.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
+    <Media Include="music.wav">
       <Filter>Resource Files</Filter>
     </Media>
   </ItemGroup>

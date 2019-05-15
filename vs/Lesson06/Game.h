@@ -49,6 +49,7 @@ namespace Engine {
 		void UseShader(GLuint program);
 		unsigned int GetScreenHeight();
 		unsigned int GetScreenWidth();
+		void Err(string errorString);
 	
 	private:
 		unordered_map<unsigned int, string> _mapNames;
@@ -62,7 +63,6 @@ namespace Engine {
 		float GetDeltaTime();
 		void GetFPS();
 		void PollInput();
-		void Err(string errorString);
 		void LimitFPS();
 		void CheckShaderErrors(GLuint shader, string type);
 		void PrintFPS();

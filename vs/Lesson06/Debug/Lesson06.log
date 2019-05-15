@@ -1,6 +1,7 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Lesson06.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  Demo.cpp
-d:\pemrograman game\kremi\vs\lesson06\demo.h(35): warning C4305: 'initializing': truncation from 'double' to 'float'
-d:\pemrograman game\kremi\vs\lesson06\demo.cpp(327): warning C4305: '+=': truncation from 'double' to 'float'
-d:\pemrograman game\kremi\vs\lesson06\demo.cpp(338): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+﻿  Demo.cpp
+d:\pemrograman game\kremi\vs\lesson06\demo.h(52): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\pemrograman game\kremi\vs\lesson06\demo.cpp(43): warning C4305: '=': truncation from 'double' to 'float'
+d:\pemrograman game\kremi\vs\lesson06\demo.cpp(353): warning C4305: '+=': truncation from 'double' to 'float'
+d:\pemrograman game\kremi\vs\lesson06\demo.cpp(364): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+d:\pemrograman game\kremi\vs\lesson06\demo.cpp(644): warning C4838: conversion from 'FT_Pos' to 'GLuint' requires a narrowing conversion
   Lesson06.vcxproj -> D:\Pemrograman Game\Kremi\vs\Debug\Kremi.exe
