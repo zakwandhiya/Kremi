@@ -95,6 +95,12 @@
     <None Include="background2.vert">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="text_shader.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="text_shader.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Demo.h">
@@ -111,5 +117,10 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="hongkonghustle.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
   </ItemGroup>
 </Project>
